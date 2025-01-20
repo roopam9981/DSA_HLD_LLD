@@ -1,0 +1,173 @@
+S - Single Responsibility
+O - Open for Extension / Close for Modification
+L - Liskov Substitution Principle
+I - Interface Segmented Principle
+D - Dependency Inversion Principle
+================================
+S- Single responsibility means a calls have should have only one reason for change
+
+Suppose there is class Marker or Object
+----------------------------------------
+class Marker{
+String name;
+String color;
+int year;
+int price;
+
+public Marker(String name,String color,int year,int price)
+this.name = name;
+this.color = color;
+this.year = year;
+this.price = price;
+}
+-------------------------------------
+Create a Invoice calss which has a marker class;
+
+Class Invoice{
+
+private Marker marker;
+private quantity;
+
+public Invoice(Marker marker , int price)
+this.marker = marker;
+this.price = price;
+}
+
+public int calculateTotalPrice(){
+int price = ((marker.price )* (this.quantity));
+return price;
+}
+
+public void printInvoice(){
+// logic to print invoice;
+}
+
+public void saveInDB(){
+// logics to save data in DB
+}
+}
+==================================================
+in above class there a 3 reason or responsibility to change the class
+so this is not a Single responsibility
+Create a Invoice calss which has a marker class;
+-------------------------------------------------
+
+Class Invoice{
+
+private Marker marker;
+private quantity;
+
+public Invoice(Marker marker , int price)
+this.marker = marker;
+this.price = price;
+}
+
+public int calculateTotalPrice(){
+int price = ((marker.price )* (this.quantity));
+return price;
+}
+}
+------------------------------------------------
+Class InvoicePrinter{
+
+private Marker marker;
+private quantity;
+
+public Invoice(Marker marker , int price)
+this.marker = marker;
+this.price = price;
+}
+
+public int Invoceprint(){
+// singel reason to change;
+}
+}
+=======================================
+O - Open for Extension / Close for Modification
+=======================================
+
+if the class suppose DB save method class is already in live , now if want to add some more logics int the same class
+Don't write the logic in the same class but extend the calss with new class and write the code here in new class.
+
+Simple Create an interface and extend create teh implemented class
+if you want future changes in logic and need to add new logics , simple create an implement class and write the logic in the new class
+
+
+=======================================
+L - Liskov Substitution Principle
+=======================================
+
+if you take a class of Vehicle which have two property {1) Boolean Engine, 2) int wheels);
+this is extended by two class ,1) Motercycle, 2) Car,
+Motercycle inherit all the property of Vehicle but carr Override the Weels Property of Vehicle because weels are 4 in car and Vehicle return 2 ;
+till here everything is correct
+but if you take one more claas which extend Vehicle class,is Cycle .
+So Cycle doesnot have Engin so it give here NullpointerException , which break the code
+issue , if the code is call so many where so you have to put lots of if else condition like
+if the instancs of Cycle not call it like that
+Now what could be the solution
+
+Create class Vechile have only one property is Wheel return 2;
+Crete extended classes of Vehicle Engin and Bicycle,
+and car and motercycle extendeds the Engin class.
+
+===============================================================
+I - Interface Segmented Principle
+===============================================================
+Interface should be such that client should not be implement unnecessary Function the do not need
+interface ko itne chote main bant do taki client ko unnecessary method implement na kerna pade
+
+Interface RestaurantEmployee(){
+void WashDisses;
+void serveFood;
+void cookFood;
+}
+
+but instead of this it should be
+-------------------------------
+Interface HelperInterface(){
+void WashDisses;
+}
+
+Interface WaiterInterface(){
+void serveFood;
+}
+
+Interface ChefInterface(){
+void cookFood;
+}
+-------------------------------
+
+========================================
+D - Dependency Inversion Principle
+========================================
+
+Class should dependent on interface rather then concrete class
+
+suppose I have
+Interface Keyboard -> class WiredKeyboard, and class BluetoothKeyBoard
+Interface Mouse -> Class WiredMouse, and Class BluetoothMouse
+
+so if I create a Mackbook class
+
+class MackBook{
+private final WiredKeyboard keyBoard;
+private final WiredMouse wiredMouse;
+public Macbook(){
+keyBoard = new WiredKeyboard;
+mouse = new WiredMouse;
+}
+}
+
+class MacBook{
+private Keyboard keyboard;
+private Mouse mouse;
+public Macbook( Keyboard   , Mouse mouse){
+this.keyboard = keyboard
+this.mouse = mouse
+}
+}
+
+
+
+
